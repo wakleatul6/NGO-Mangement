@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
+		<property name="hbm2ddl.auto">
+			update</property>
+
+		<property name="hibernate.connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+
+		<property name="hibernate.connection.url">
+			jdbc:mysql://localhost:3306/project
+		</property>
+		<property name="hibernate.connection.username">
+			root
+		</property>
+		<property name="hibernate.connection.password">
+
+		</property>
+		<!-- <mapping class="com.app.bean.Administrator"/> -->
+
+
+		<mapping class="com.app.bean.Project" />
+		<mapping class="com.app.bean.Activity" />
+		<mapping class="com.app.bean.Donor" />
+		<mapping class="com.app.bean.User" />
+		<mapping class="com.app.bean.Payment" />
+		<mapping class="com.app.bean.PaymentRelease" />
+
+	</session-factory>
+</hibernate-configuration>  

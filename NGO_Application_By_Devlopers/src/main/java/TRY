@@ -1,0 +1,218 @@
+
+	
+	
+	
+	
+	
+	
+		
+		switch (value) {
+		case 1:
+			Project_ListDao empDao1=Project_ListFactory.getProject_ListDao();
+			Scanner ab =new Scanner(System.in);
+			int choice;
+			
+			String conti;
+			do {
+				System.out.println("!----------------Project List-------!");
+				System.out.println("1. insert Project");
+				System.out.println("2. update project Details");
+				System.out.println("3. delete Project");
+				System.out.println("4. Get All Project List");
+				System.out.println("5. get Single Project Details");
+				System.out.println("!----------------End-------!");
+				System.out.println("Enter you choice:");
+				choice=sn.nextInt();
+				
+				
+				switch (choice) {
+				case 1: //insert Project
+					
+					System.out.println("Enter your name:");
+					String name=ab.next();
+					
+					Project_List emp=new Project_List(name);
+					int i=empDao1.insertData(emp);
+					if(i==1)
+					{
+						System.out.println("Data inserted successfully.");
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+					}
+					break;
+				case 2: //update project Details
+					System.out.println("Enter your id:");
+					int id2=ab.nextInt();
+					System.out.println("Enter your name:");
+					String name1=ab.next();
+					
+					Project_List emp5=new Project_List(name1, id2);
+					int i2=empDao1.updateData(emp5);
+					if(i2==1)
+					{
+						System.out.println("Data update successfully.");
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+					}
+					break;
+				case 3://delete Project
+					System.out.println("Enter your id:");
+					int id1=ab.nextInt();
+					
+				
+					int row=empDao1.deleteData(id1);
+					if(row==1)
+					{
+						System.out.println("Data deleted successfully.");
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+					}
+					break;
+				case 4://Get All Project List
+					List<Project_List> list=empDao1.listEmployee();
+					if(list!=null){
+						for(Project_List e:list) {
+							System.out.println(e.getProId()+"\t"+e.getProjectName());
+						}
+					}else {
+						System.out.println("something went wrong..!");
+					}
+					break;
+				case 5://get Single Project Details
+					System.out.println("Enter your id:");
+					int empId=ab.nextInt();
+					
+					List<Project_List> emp1=empDao1.getEmployee(empId);
+					if(emp1!=null)
+					{
+						for(Project_List e:emp1) {
+							System.out.println(e.getProId()+"\t"+e.getProjectName());
+						}
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+			 		}
+					break;
+				default:
+					break;
+				}
+				System.out.println("do you want to continue...!");
+				conti=ab.next();
+				
+			}while(conti.equalsIgnoreCase("y"));
+
+		
+			break;
+		
+	
+//Admin Activity
+case 2:
+		
+			Project_ActivityDao empDao=Project_ActivityFactory.getProject_ActivityDao();
+			Scanner sn=new Scanner (System.in);
+			int choice4;
+			String conti4;
+			do {
+				addActivity(empDao, sn);
+				
+				System.out.println("Do You Want To Continue......!");
+				conti4=jio.next();
+				
+			}while(conti4.equalsIgnoreCase("y"));
+		break;
+			
+			
+			//Admin doner Registration
+	case 3:
+			AdministratorDao empDao11=AdministratorFactory.getAdministratorDao();
+			int choice2;
+			String conti2;
+			
+		do {System.out.println("!----------------Doner Registration-------!");
+		System.out.println("1. insert data");
+		System.out.println("2. update data");
+		System.out.println("3. delete data");
+		System.out.println("4. Get All data");
+		System.out.println("5. get Single data");
+		System.out.println("6. insert Distribution Details");
+		System.out.println("Enter you choice:");
+		choice2=sn.nextInt();
+		
+		switch (choice2) {
+		case 1:
+			register(sn, empDao11);
+			break;
+		case 2:
+			addDonar(sn, empDao11);
+			break;
+		case 3:
+			System.out.println("Enter your id:");
+			int volId=sn.nextInt();
+			
+		
+			int row=empDao11.deleteData(volId);
+			if(row==1)
+			{
+				System.out.println("Data deleted successfully.");
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		case 4:
+			
+			
+			List<Administrator> list=empDao11.listEmployee();
+			if(list!=null)
+			{
+				for(Administrator e:list) {
+					System.out.println(e.getVolUserId()+"\t"+e.getVolName()+"\t"
+				+e.getVolEmail()+"\t"+e.getVolMob()+"\t"+e.getVolAmount());
+				}
+			}else {
+				System.out.println("something went wrong..!");
+			}
+			break;
+		case 5:
+			System.out.println("Enter your id:");
+			int empId=sn.nextInt();
+			
+			List<Administrator> emp1=empDao11.getEmployee(empId);
+			if(emp1!=null)
+			{
+				for(Administrator e:emp1) {
+					System.out.println(e.getVolUserId()+"\t"+e.getVolName()+"\t"
+				+e.getVolMob()+"\t"+e.getVolEmail()+"\t"+e.getVolAmount());
+				}
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		
+		default:
+			break;
+		}
+		
+		
+		System.out.println("do you want to continue...!");
+		conti2=sn.next();
+		
+		}while(conti2.equalsIgnoreCase("y"));
+	
+		} 
+	System.out.println("do you want to continue...!");
+	conti3=sn.next();
+			
+}
+		while(conti3.equalsIgnoreCase("y"));
+				
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+		else {
+			System.out.println("Enter Valid Data");
+		}break;

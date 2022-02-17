@@ -1,0 +1,529 @@
+	do{System.out.println("1.Project Details");
+			System.out.println("2.Project Activity");
+			System.out.println("3.Doner Registration");
+			System.out.println("4. Make Payment");
+			
+			
+			pstmt=con.prepareStatement("select * from symbiosis_ngo where volUserId=? and volPass=?");
+	pstmt.setString(1, administrator.getVolUserId());
+	pstmt.setString(2, administrator.getVolPass());
+	ResultSet rs=pstmt.executeQuery();
+	UserProfile userProfile=new UserProfile();
+	if(rs.next()) {
+		userProfile.setVolName(rs.getString("volName"));
+		userProfile.setVolEmail(rs.getString("volEmail"));
+		userProfile.setVolMob(rs.getLong("volMob"));
+		userProfile.setVolAmount(rs.getDouble("volAmount"));
+		
+		userProfile.setMsg("Welcome to your profile ."+rs.getString("volName")+" login Successfully.");
+		userProfile.setFlag(true);
+		
+		
+	}
+	else {
+		userProfile.setMsg("Sorry your not Register user need to register first");
+		userProfile.setFlag(false);
+	}
+	
+	
+	
+	package com.app.test;
+
+import java.util.List;  
+import java.util.Scanner;
+
+import com.app.Dto.Profile;
+import com.app.Dto.RequestDto;
+import com.app.Dto.UserProfile;
+import com.app.Dto.loginDto;
+import com.app.bean.Administrator;
+
+import com.app.bean.Project_Activity;
+import com.app.bean.Project_List;
+import com.app.bean.User;
+import com.app.dao.AdministratorDao;
+import com.app.dao.DLoginDao;
+import com.app.dao.DRegisterDao;
+import com.app.dao.Project_ActivityDao;
+import com.app.dao.Project_ListDao;
+import com.app.dao.impl.Project_ListDaoImpl;
+import com.app.factory.AdministratorFactory;
+import com.app.factory.Project_ActivityFactory;
+import com.app.factory.Project_ListFactory;
+
+public class Client2 {
+
+	public static void main(String[] args) throws Exception {
+		Scanner sn=new Scanner(System.in);
+		String test;
+		int choice;
+		Project_ListDaoImpl empDao1=new Project_ListDaoImpl();
+		
+	
+do{
+			System.out.println("Welcome to My Application");
+			System.out.println("press 1. Register");
+			System.out.println("press 2. login");
+			System.out.println("-------------------------------------------");
+			System.out.println("Enter your choice");
+			int key=sn.nextInt();
+switch (key) {
+case 1: // admin login
+		User user=new RequestDto().registerUser();
+		int i=new DRegisterDao().userregister(user);
+		if(i==1) {
+			System.out.println("Welcome To Symbiosis NGO");
+			System.out.println("Record inserted successfully.");
+		}
+		else {
+			System.out.println("something went wrong");
+		}
+		
+		break;
+case 2:
+	loginDto loginDto=new RequestDto().loginRequest();
+	Profile profile=new DLoginDao().login(loginDto);
+	if(profile!=null && profile.getRole().equals("admin")) {
+		
+		AddProject(sn, empDao1);
+	break;
+}
+		
+		
+			break;
+		
+	
+//Admin Activity
+case 2:
+		
+			Project_ActivityDao empDao=Project_ActivityFactory.getProject_ActivityDao();
+			Scanner jio=new Scanner (System.in);
+			int choice4;
+			String conti4;
+			do {
+				System.out.println("!------------Project Activity Details----------------!");
+				System.out.println("1.insert Activity Details");
+				System.out.println("2.update Activity Details");
+				System.out.println("3.delete Activity Details");
+				System.out.println("4.Get All Activity Details");
+				System.out.println("5.Get Single Activity Details");
+				System.out.println("!------------END----------------!");
+				System.out.println("Enter Your Choice");
+				choice4=jio.nextInt();
+				
+				switch (choice4) {
+				case 1:
+					System.out.println("Enetr Your Activity Name");
+					String activity=jio.next();
+					Project_Activity emp=new Project_Activity( activity);
+					int i=empDao.insertData(emp);
+					if(i==1) {
+						System.out.println("Deta inserted Successfully.");
+					}
+					else {
+						System.out.println("Data Not Insrted Something Went Wrong...!");
+					}
+					break;
+				case 2:
+					System.out.println("Enter your Activity id:");
+					int actId1=jio.nextInt();
+					System.out.println("Enter your Activity name:");
+					String activity2=jio.next();
+					Project_Activity emp5=new Project_Activity(actId1,activity2);
+					int i2=empDao.updateData(emp5);
+					if(i2==1)
+					{
+						System.out.println("Data update successfully.");
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+					}
+					break;
+				case 3:
+					System.out.println("Enter your Activity id:");
+					int actId=jio.nextInt();
+					
+				
+					int row=empDao.deleteData(actId);
+					if(row==1)
+					{
+						System.out.println("Data deleted successfully.");
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+					}
+					break;
+				case 4:
+					
+					
+					List<Project_Activity> list=empDao.listActivity();
+					if(list!=null)
+					{
+						for(Project_Activity e:list) {
+							System.out.println(e.getActId()+"\t"+e.getActivity());
+						}
+					}else {
+						System.out.println("something went wrong..!");
+					}
+					break;
+				case 5:
+					System.out.println("Enter your id:");
+					int empId=jio.nextInt();
+					
+					List<Project_Activity> emp1=empDao.getProject_Activity(empId);
+					if(emp1!=null)
+					{
+						for(Project_Activity e:emp1) {
+							System.out.println(e.getActId()+"\t"+e.getActivity());
+						}
+					}else {
+						System.out.println("Data Not Inserted something went wrong..!");
+					}
+					break;
+
+				default:
+					break;
+				}
+				
+				System.out.println("Do You Want To Continue......!");
+				conti4=jio.next();
+				
+			}while(conti4.equalsIgnoreCase("y"));
+		break;
+			
+			
+			//Admin doner Registration
+	case 3:
+			AdministratorDao empDao11=AdministratorFactory.getAdministratorDao();
+			int choice2;
+			String conti2;
+			
+		do {System.out.println("!----------------Doner Registration-------!");
+		System.out.println("1. insert data");
+		System.out.println("2. update data");
+		System.out.println("3. delete data");
+		System.out.println("4. Get All data");
+		System.out.println("5. get Single data");
+		System.out.println("6. insert Distribution Details");
+		System.out.println("Enter you choice:");
+		choice2=sn.nextInt();
+		
+		switch (choice2) {
+		case 1:
+			register(sn, empDao11);
+			break;
+		case 2:
+			addDonar(sn, empDao11);
+			break;
+		case 3:
+			System.out.println("Enter your id:");
+			int volId=sn.nextInt();
+			
+		
+			int row=empDao11.deleteData(volId);
+			if(row==1)
+			{
+				System.out.println("Data deleted successfully.");
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		case 4:
+			
+			
+			List<Administrator> list=empDao11.listEmployee();
+			if(list!=null)
+			{
+				for(Administrator e:list) {
+					System.out.println(e.getVolUserId()+"\t"+e.getVolName()+"\t"
+				+e.getVolEmail()+"\t"+e.getVolMob()+"\t"+e.getVolAmount());
+				}
+			}else {
+				System.out.println("something went wrong..!");
+			}
+			break;
+		case 5:
+			System.out.println("Enter your id:");
+			int empId=sn.nextInt();
+			
+			List<Administrator> emp1=empDao11.getEmployee(empId);
+			if(emp1!=null)
+			{
+				for(Administrator e:emp1) {
+					System.out.println(e.getVolUserId()+"\t"+e.getVolName()+"\t"
+				+e.getVolMob()+"\t"+e.getVolEmail()+"\t"+e.getVolAmount());
+				}
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		
+		default:
+			break;
+		}
+		
+		
+		System.out.println("do you want to continue...!");
+		conti2=sn.next();
+		
+		}while(conti2.equalsIgnoreCase("y"));
+	
+		} 
+	System.out.println("do you want to continue...!");
+	conti3=sn.next();
+			
+}
+		while(conti3.equalsIgnoreCase("y"));
+				
+		}
+
+	/**
+	 * @param sn
+	 * @param empDao1
+	 */
+	public static void AddProject(Scanner sn, Project_ListDaoImpl empDao1) {
+		int choice;
+		System.out.println("!----------------Project List-------!");
+		System.out.println("1. insert Project");
+		System.out.println("2. update project Details");
+		System.out.println("3. delete Project");
+		System.out.println("4. Get All Project List");
+		System.out.println("5. get Single Project Details");
+		System.out.println("!----------------End-------!");
+		System.out.println("Enter you choice:");
+		choice=sn.nextInt();
+		switch (choice) {
+		case 1: //insert Project
+			
+			System.out.println("Enter your name:");
+			String name=sn.next();
+			
+			Project_List emp=new Project_List(name);
+			int i1=empDao1.insertData(emp);
+			if(i1==1)
+			{
+				System.out.println("Data inserted successfully.");
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		case 2: //update project Details
+			System.out.println("Enter your id:");
+			int id2=sn.nextInt();
+			System.out.println("Enter your name:");
+			String name1=sn.next();
+			
+			Project_List emp5=new Project_List(name1, id2);
+			int i2=empDao1.updateData(emp5);
+			if(i2==1)
+			{
+				System.out.println("Data update successfully.");
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		case 3://delete Project
+			System.out.println("Enter your id:");
+			int id1=sn.nextInt();
+			
+		
+			int row=empDao1.deleteData(id1);
+			if(row==1)
+			{
+				System.out.println("Data deleted successfully.");
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+			}
+			break;
+		case 4://Get All Project List
+			List<Project_List> list=empDao1.listEmployee();
+			if(list!=null){
+				for(Project_List e:list) {
+					System.out.println(e.getProId()+"\t"+e.getProjectName());
+				}
+			}else {
+				System.out.println("something went wrong..!");
+			}
+			break;
+		case 5://get Single Project Details
+			System.out.println("Enter your id:");
+			int empId=sn.nextInt();
+			
+			List<Project_List> emp1=empDao1.getEmployee(empId);
+			if(emp1!=null)
+			{
+				for(Project_List e:emp1) {
+					System.out.println(e.getProId()+"\t"+e.getProjectName());
+				}
+			}else {
+				System.out.println("Data Not Inserted something went wrong..!");
+	 		}
+			break;
+	}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+		else {
+			System.out.println("Enter Valid Data");
+		}break;
+///////////////////////////////////////////////////////////////////////////////////////////////		
+		
+//Donner Resistration
+case 2:
+	Scanner dn=new Scanner(System.in);
+RequestDto request=new RequestDto();
+String choice="";
+do {
+	System.out.println("Welcome to My Application");
+	System.out.println("press 1. Register");
+	System.out.println("press 2. Login");
+	System.out.println("-------------------------------------------");
+	System.out.println("Enter your choice");
+	int keys=dn.nextInt();
+	switch (keys) {
+	case 1:
+		Administrator user=request.registeRequest();
+		DRegisterDao dao=new DRegisterDao();
+		int i=dao.register(user);
+		if(i==1) {
+			System.out.println("Data Register successfully..!");
+		}
+		
+		else {
+			System.out.println("Sorry user not register..!");
+		}
+		break;
+	case 2:
+		loginDto dto=request.loginRequest();
+		DLoginDao loginDao=new DLoginDao();
+		UserProfile profile=loginDao.login(dto);
+		if(profile!=null) {
+			System.out.println(profile);
+		}
+		break;
+	default:
+		System.out.println("Invalid Request");
+		break;
+	}
+	System.out.println("Do you want to continue...!");
+
+	choice=dn.next();
+}
+while(choice.equalsIgnoreCase("y"));
+	
+}System.out.println("do you want to continue...!");
+test=an.next();
+
+}while(test.equalsIgnoreCase("y"));
+			
+	}
+
+	private static void addDonar(Scanner sn, AdministratorDao empDao11) {
+		System.out.println("Enter your volunteer id:");
+		int id1=sn.nextInt();
+		System.out.println("Enter your volunteer name:");
+		String name1=sn.next();
+		System.out.println("Enter your volunteer User_Name:");
+		String user_name1=sn.next();
+		System.out.println("Enter your volunteer Password:");
+		String pass1=sn.next();
+		System.out.println("Enter your volunteer mobile_number:");
+		long mol_Num1=sn.nextLong();
+		System.out.println("Enter your volunteer Email_Id");
+		String email_Id1=sn.next();
+		System.out.println("Enter your volunteer Donation_rs:");
+		double rs1=sn.nextDouble();
+		Administrator emp5=new Administrator(id1, name1, user_name1, pass1, mol_Num1, rs1, email_Id1);
+		int i2=empDao11.updateData(emp5);
+		if(i2==1)
+		{
+			System.out.println("Data update successfully.");
+		}else {
+			System.out.println("Data Not Inserted something went wrong..!");
+		}
+	}
+
+	private static void register(Scanner sn, AdministratorDao empDao11) {
+		System.out.println("Enter your volunteer id:");
+		int id=sn.nextInt();
+		System.out.println("Enter your volunteer name:");
+		String name=sn.next();
+		System.out.println("Enter your volunteer User_Name:");
+		String user_name=sn.next();
+		System.out.println("Enter your volunteer Password:");
+		String passa=sn.next();
+		System.out.println("Enter your volunteer mobile_number:");
+		long mol_Num=sn.nextLong();
+		System.out.println("Enter your volunteer Email_Id");
+		String email_Id=sn.next();
+		System.out.println("Enter your volunteer Donation_rs:");
+		double rs=sn.nextDouble();
+		
+		Administrator emp =new Administrator(id, name, user_name, passa, mol_Num, rs, email_Id);
+		int i=empDao11.insertData(emp);
+		if(i==1)
+		{
+			System.out.println("Data inserted successfully.");
+		}else {
+			System.out.println("Data Not Inserted something went wrong..!");
+		}
+	}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("Do You want Register..(Y)");
+							String yes=sn.next();
+							
+						if(yes.equals(yes)) {
+							User user1 = new RequestDto().registerUser();
+							int i1 = new RegisterDao().userregister(user1);
+							if (i1 == 1) {
+								System.out.println("Welcome To Symbiosis NGO");
+								System.out.println("Record inserted successfully.");
+							} else {
+								System.out.println("something went wrong");
+								}
+
+						}else {
+							System.out.println("Thank You..........................");
+							}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
