@@ -5,6 +5,6 @@ In that project, we used Hibernate,core java, Framework, Entities,JDBC
       Abhijeet Pasare
       Aishwarya Kamane
       Aishwarya Mane
-      Mayuri Mager
+      Mayuri Magar
       Subham Shinde
 # Guide: Raj Kolhe
